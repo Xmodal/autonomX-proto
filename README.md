@@ -1,3 +1,3 @@
-Public-domain prototypes for the Dynamic Light project.
+Prototypes for the Dynamic Light project.
 
-The prototypes in this repository are in the public domain.
+Unless stated otherwise, the prototypes in this repository are in the public domain.
