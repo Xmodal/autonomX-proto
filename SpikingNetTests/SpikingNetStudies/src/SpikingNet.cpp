@@ -631,6 +631,8 @@ void SpikingNet::stp(){
 }
 
 double SpikingNet::getStpValue(int index, int is_firing){
+    // see http://www.rmki.kfki.hu/~banmi/elte/synaptic.pdf for paper describing the mechanics of this
+    
     double U = 0.2; // mV. baseline level for u
 
     double s = double(is_firing); // s indicates whether the neuron is currently firing or not (0 or 1)
