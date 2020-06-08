@@ -1,4 +1,8 @@
-// Copyright YEAR, AUTHOR
+//
+//  Izhikevich.cpp
+//
+//
+// Copyright 2020, Atsushi Masumori, Alexandre Saunier, Simon Demeule
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

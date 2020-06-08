@@ -1,10 +1,21 @@
 //
-//  neuronCtrl.cpp
+//  SpikingNet.cpp
 //  SpikingNeuronSimulator
 //
-//  Created by atsmsmr on 2014/10/20.
-//  Copyright (c) 2014年 Atsushi Masumori. All rights reserved.
+// Copyright 2020, Atsushi Masumori, Alexandre Saunier, Simon Demeule
 //
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "SpikingNet.h"
 #include <iomanip>
@@ -484,6 +495,7 @@ void SpikingNet::clearSpikedNeuronId(){
 }
 
 void SpikingNet::checkTask(){
+    // TODO: it seems like this code (along with anything referencing spiked_neuron_id and variants) is intended to record spike timings and save them to a file. these operations are needlessly expensive and unnecessary for our use case. remove this from the code and implement a more efficient, simple way of computing the output of groups
 
     // Remove overlaps
     std::sort(spiked_neuron_id_cum.begin(), spiked_neuron_id_cum.end());
@@ -508,6 +520,7 @@ void SpikingNet::checkTask(){
     }
 }
 
+// the thing that produces the actual output
 int SpikingNet::getSpikedOutput(int index){
     return spiked_num_of_output_group[index];
 }
@@ -558,6 +571,14 @@ void SpikingNet::update_neuron(){
 
 void SpikingNet::stdp(){
 
+    // read http://www.scholarpedia.org/article/Spike-timing_dependent_plasticity for more info on the maths behind this
+    
+    // decrease the stdp_count for all neurons. this keeps track of how far away in time the neuron has fired.
+    // if the neuron is currently firing, set its stdp_count to stdp_tau.
+    // when it reaches 0, it won't be considered when changing weights according to spike time changes.
+    
+    // TODO: this is not framerate invariant, as it measures timings by counting frames. this needs to be fixed.
+    
     for(int i=Number_Of_Inhibitory; i<Number_Of_Neurons; ++i){
         if(stdp_counts[i]>0) stdp_counts[i] = stdp_counts[i] - 1;
         if(neurons[i].isFiring()) stdp_counts[i] = stdp_tau;
@@ -571,18 +592,21 @@ void SpikingNet::stdp(){
             for(int j=Number_Of_Inhibitory; j<Number_Of_Neurons; j++){
 
                 if(stdp_counts[j]>0 && stdp_counts[j] != stdp_tau && i != j){
+                    // another (uniquely different) neuron has fired in the last stdp_tau frames (excluding the current frame)
+                    //
 
                     d = (0.1 * pow(0.95, (stdp_tau-stdp_counts[j])));
 
-                    //check that neuron linked to i fired less than tau_ms before (but is not firing right now)
-                    //if j fired before i, then weight j->i ++
+                    // check that neuron linked to i fired less than tau_ms before (but is not firing right now)
+                    // if j fired before i, then weight j->i ++
                     if(weights[j][i] != 0.0){
                         weights[j][i] += d;
                         if (weights[j][i] > Weight_Max) weights[j][i] = Weight_Max;
 
                     }
 
-                    //now weight from i to j, should be lowered if i fired before j
+                    // now weight from i to j, should be lowered if i fired before j. careful! only the indexing changes.
+                    // if j fired after i, then weight j->i --
                     if(weights[i][j] != 0.0){
                         weights[i][j] -= d;
                         if(weights[i][j] < Weight_Min) weights[i][j] = Weight_Min;
@@ -607,24 +631,35 @@ void SpikingNet::stp(){
 }
 
 double SpikingNet::getStpValue(int index, int is_firing){
-    double wf = 0.;
+    double U = 0.2; // mV. baseline level for u
 
-    double s = double(is_firing);
-    double u = stp_u[index];
-    double x = stp_x[index];
+    double s = double(is_firing); // s indicates whether the neuron is currently firing or not (0 or 1)
+    double u = stp_u[index];    // u represents the amount of resources used by the creation of a spike.
+                                // normalized (0, U), baseline is U
+    double x = stp_x[index];    // x represents the amount of resources avaliable
+                                // normalized (0, 1), baseline is 1
+    
+    // when a spike is created, an amount u * x of resources is used. this decreases x and increases u
+    // both u and v recover to their baseline levels exponentially.
 
-    double tau_d = 200.;//ms
-    double tau_f = 600.;//ms
-    double U = 0.2;//mV
-    double dx = (1.0-x)/tau_d - u*x*s;
-    double du = (U - u)/tau_f + U*(1.0-u)*s;
+    double tau_d = 200.; // ms. defines the time constant for the recovery of x (resources)
+    double tau_f = 600.; // ms. defines the time constant for the recovery of u (usage)
+    
+    // when tau_d > tau_f, the neural activity is depressed
+    // when tau_d < tau_f, the neural activity is facilitated
+    
+    double dx = (1.0-x)/tau_d - u*x*s;       // change for x
+    double du = (U - u)/tau_f + U*(1.0-u)*s; // change for u
 
-    double nu = u+du;
-    double nx = x+dx;
-
-    wf = nu*nx;
+    double nu = u+du; // new value for u
+    double nx = x+dx; // new value for x
+    
+    double wf = nu*nx; // final value returned. modulates synaptic efficacy
+    
+    // update stored values
     stp_u[index] = nu;
     stp_x[index] = nx;
+
     return wf;
 }
 

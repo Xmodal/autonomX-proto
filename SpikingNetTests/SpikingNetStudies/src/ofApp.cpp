@@ -1,3 +1,18 @@
+// Copyright 2020, Atsushi Masumori, Alexandre Saunier, Simon Demeule
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "ofApp.h"
 
 // PARAM
@@ -27,6 +42,12 @@ void ofApp::setup(){
 #ifdef USE_OSC
     osc_sender_msx.setup("localhost", PORT_OUT);
     
+    // inhibitory neurons are first, the rest is excitatory neurons
+    // input and output neurons are always in the excitatory neurons
+    
+    // ------ inhibitory ------ | --------------------------- excitatory ------------------------------ |
+    // ------ unassigned ------ | ------ input ------ | ------ output ------ | ------ unassigned ------ |
+    
     //SUSCRIBE
     ofxSubscribeOsc(PORT_IN, "/SNN/stimulation", stimulation_val);
     ofxSubscribeOsc(PORT_IN, "/SNN/whole_stimulation", whole_stimulation_val);
@@ -37,11 +58,11 @@ void ofApp::setup(){
     ofxSubscribeOsc(PORT_IN, "/SNN/set_grid_network_width", set_grid_network_width);
     ofxSubscribeOsc(PORT_IN, "/SNN/set_inhibitory_neuron_type", set_inhibitory_neuron_type);
     ofxSubscribeOsc(PORT_IN, "/SNN/set_excitatory_neuron_type", set_excitatory_neuron_type);
-    ofxSubscribeOsc(PORT_IN, "/SNN/set_inhibitory_portion", set_inhibitory_portion);
+    ofxSubscribeOsc(PORT_IN, "/SNN/set_inhibitory_portion", set_inhibitory_portion);// portion: fraction of global neurons dedicated to inhibitory (1/x, where x is the provided number), the rest is excitatory
     ofxSubscribeOsc(PORT_IN, "/SNN/set_input_portion", set_input_portion);
     ofxSubscribeOsc(PORT_IN, "/SNN/set_input_group_size", set_input_group_size);
-    ofxSubscribeOsc(PORT_IN, "/SNN/set_output_portion", set_output_portion);
-    ofxSubscribeOsc(PORT_IN, "/SNN/set_output_group_size", set_output_group_size);
+    ofxSubscribeOsc(PORT_IN, "/SNN/set_output_portion", set_output_portion);        // portion: fraction of global neurons dedicated to output (1/x, where x is the provided number)
+    ofxSubscribeOsc(PORT_IN, "/SNN/set_output_group_size", set_output_group_size);  // group size: subdivides the output neurons into x groups, from which the actual (x) output values are derived
     ofxSubscribeOsc(PORT_IN, "/SNN/set_number_of_connections", set_number_of_connections);
     ofxSubscribeOsc(PORT_IN, "/SNN/set_stp_flag", set_stp_flag);
     ofxSubscribeOsc(PORT_IN, "/SNN/set_stdp_flag", set_stdp_flag);
