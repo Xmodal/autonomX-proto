@@ -573,14 +573,39 @@ void SpikingNet::stdp(){
 
     // read http://www.scholarpedia.org/article/Spike-timing_dependent_plasticity for more info on the maths behind this
     
-    // decrease the stdp_count for all neurons. this keeps track of how far away in time the neuron has fired.
-    // if the neuron is currently firing, set its stdp_count to stdp_tau.
-    // when it reaches 0, it won't be considered when changing weights according to spike time changes.
+    // essentially, this is a technique for dynamically changing the strength of connections according to the the firing patterns of connected neurons.
+    // spike timing dependent plasticity works by strengthening connections that "predict" spiking patterns, and in a way "speed up" the propagation of spikes, in the sense that if a neuron A has a tendency to fire just before another neuron B, the connection from A to B will become stronger. inversely, the connection from B to A will become weaker.
+    
+    // the way the connection strength changes is decided by a function made up of two exponentials. it looks a bit like this.
+    
+    //                            . +
+    //                           .  |
+    //                        ...   |
+    //  connection       .....      |
+    //  strength     - <------------|------------> +
+    //  change                      |      .....
+    //  A -> B                      |   ...
+    //                              |  .
+    //                              - .
+    //
+    //                       timing difference
+    //
+    //                A before B        B before A
+    //
+    
+    // in this code, stdp_counts[i] stores a number that allows calculating how many frames ago the neuron i fired.
+    // when stdp_counts[i] = stdp_tau (in this case it is hard-coded to 20), the neuron fired in the current frame.
+    // at every subsequent frame it is decremented.
+    // the way we compute how many frames ago the neuron fired is by evaluating stdp_tau - stdp_counts[i]
     
     // TODO: this is not framerate invariant, as it measures timings by counting frames. this needs to be fixed.
     
     for(int i=Number_Of_Inhibitory; i<Number_Of_Neurons; ++i){
+        // decrease the stdp_count for all neurons. this keeps track of how far away in time the neuron has fired.
+        // when it reaches 0, it won't be considered when changing weights according to spike time changes.
         if(stdp_counts[i]>0) stdp_counts[i] = stdp_counts[i] - 1;
+        
+        // if the neuron is currently firing, set its stdp_count to stdp_tau.
         if(neurons[i].isFiring()) stdp_counts[i] = stdp_tau;
     }
 
@@ -594,7 +619,8 @@ void SpikingNet::stdp(){
                 if(stdp_counts[j]>0 && stdp_counts[j] != stdp_tau && i != j){
                     // another (uniquely different) neuron has fired in the last stdp_tau frames (excluding the current frame)
                     //
-
+                    
+                    // this is part of the exponential function described above
                     d = (0.1 * pow(0.95, (stdp_tau-stdp_counts[j])));
 
                     // check that neuron linked to i fired less than tau_ms before (but is not firing right now)

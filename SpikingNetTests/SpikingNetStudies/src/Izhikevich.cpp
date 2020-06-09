@@ -131,6 +131,7 @@ void Izhikevich::setNeuronType(int _type){
 
 
 void Izhikevich::update(){
+    // TODO: add a parameter for timestep size
     v = v + 0.5*(0.04*v*v + 5*v +140 - u + I);
     v = v + 0.5*(0.04*v*v + 5*v +140 - u + I);
     u = u + a*(b*v-u);
