@@ -9,7 +9,7 @@ class Generator : public QObject
     Q_OBJECT
     Q_PROPERTY(double frequency READ getFrequency WRITE setFrequency NOTIFY frequencyChanged)
 private:
-    double time;
+    double phase;
     double frequency;
     double output;
 public:
@@ -24,7 +24,6 @@ public:
     };
     void setFrequency(double frequency) {
         this->frequency = frequency;
-        qDebug() << "frequency changed";
         emit frequencyChanged(frequency);
     };
 signals:

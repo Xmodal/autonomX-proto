@@ -2,15 +2,21 @@
 #include <math.h>
 #include <QDebug>
 
-Generator::Generator(QObject *parent) : QObject(parent), time(0), frequency(1)
+Generator::Generator(QObject *parent) : QObject(parent), phase(0), frequency(1)
 {
 
 }
 
 void Generator::computeOutput(double deltaTime) {
-    time += deltaTime;
-    output = cos(time * frequency * 2.0 * M_PI);
+    phase += deltaTime * frequency;
+    output = 0.5 + 0.5 * cos(phase * 2.0 * M_PI);
     qDebug() << deltaTime;
+    QString bar = "";
+    int maxLength = 16;
+    for(int i = 0; i < output * maxLength; i++) {
+        bar += "=";
+    }
+    qDebug() << bar;
 }
 
 double Generator::readOutput(int index) {
