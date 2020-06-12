@@ -17,29 +17,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "SpikeNetWriter.h"
+#include "SpikingNetWriter.h"
 
-SpikeNetWriter::SpikeNetWriter(){
+SpikingNetWriter::SpikingNetWriter(){
     
 }
 
-SpikeNetWriter::~SpikeNetWriter(){
+SpikingNetWriter::~SpikingNetWriter(){
     
 }
 
-void SpikeNetWriter::open(std::string filepath){
+void SpikingNetWriter::open(std::string filepath){
     sn_stream.open(filepath);
 };
 
-void SpikeNetWriter::open(char* filepath){
+void SpikingNetWriter::open(char* filepath){
     sn_stream.open(filepath);
 };
 
-void SpikeNetWriter::write(int frame_current, double value){
+void SpikingNetWriter::write(int frame_current, double value){
     sn_stream << frame_current << "," << value << std::endl;
 };
 
-void SpikeNetWriter::writeWeights(int frame_current, double** weights){
+void SpikingNetWriter::writeWeights(int frame_current, double** weights){
     
     for(int i=0; i<ConstParams::Number_Of_Neurons; i++){
         for(int j=0; j<ConstParams::Number_Of_Neurons; j++){
@@ -50,16 +50,7 @@ void SpikeNetWriter::writeWeights(int frame_current, double** weights){
     
 };
 
-void SpikeNetWriter::writeSpikes(int frame_current, std::vector<int> spiked_neuron_ids){
-    
-    for(int i=0; i<spiked_neuron_ids.size(); i++){
-        sn_stream << frame_current << "," << spiked_neuron_ids[i] << "\n";
-    }
-    
-};
-
-
-void SpikeNetWriter::writeSome(std::vector<double> some_values){
+void SpikingNetWriter::writeSome(std::vector<double> some_values){
     
     for(int i=0; i<some_values.size(); i++){
         sn_stream << some_values[i];
@@ -68,7 +59,7 @@ void SpikeNetWriter::writeSome(std::vector<double> some_values){
     }
 };
 
-void SpikeNetWriter::writeSettings(){
+void SpikingNetWriter::writeSettings(){
     
     struct tm *date;
     time_t now;
@@ -124,6 +115,6 @@ void SpikeNetWriter::writeSettings(){
     
 }
 
-void SpikeNetWriter::close(){
+void SpikingNetWriter::close(){
     sn_stream.close();
 }

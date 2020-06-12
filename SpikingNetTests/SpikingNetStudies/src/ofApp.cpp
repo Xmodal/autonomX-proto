@@ -42,12 +42,6 @@ void ofApp::setup(){
 #ifdef USE_OSC
     osc_sender_msx.setup("localhost", PORT_OUT);
     
-    // inhibitory neurons are first, the rest is excitatory neurons
-    // input and output neurons are always in the excitatory neurons
-    
-    // ------ inhibitory ------ | --------------------------- excitatory ------------------------------ |
-    // ------ unassigned ------ | ------ input ------ | ------ output ------ | ------ unassigned ------ |
-    
     //SUSCRIBE
     ofxSubscribeOsc(PORT_IN, "/SNN/stimulation", stimulation_val);
     ofxSubscribeOsc(PORT_IN, "/SNN/whole_stimulation", whole_stimulation_val);
@@ -102,7 +96,7 @@ void ofApp::update(){
     //----------
     //update parameters
     //----------
-    for(i=0; i < ConstParams::Input_Group_Size; i++){
+    for(i = 0; i < SpikingNetParameters::Input_Group_Size; i++){
         spike_net.stimulation(i, stimulation_val[i]); // (input group id, stimlation strength)
     }
     if(whole_stimulation_val != 0){
@@ -118,17 +112,14 @@ void ofApp::update(){
     //UPDATE SNN OUTPUT
     
     //get firing rates
-    for(i=0;i<ConstParams::Output_Group_Size;i++){
+    for(i = 0; i < SpikingNetParameters::Output_Group_Size; i++){
         spiked_output[i]= spike_net.getSpikedOutput(i)/(n*output_time_window);
         output_group_value[i] = ofClamp(spiked_output[i]*spiked_scalar, 0, 254);
-    }
-    if(ofGetFrameNum()%output_time_window == 0){
-        spike_net.clearSpikedNeuronId();
     }
     
     osc_spiked_output.clear();
     osc_spiked_output.setAddress("/SNN_output/spiked_output");
-    for(i=0;i<ConstParams::Output_Group_Size;i++){  //only one output group here
+    for(i = 0; i < SpikingNetParameters::Output_Group_Size; i++){  //only one output group here
         osc_spiked_output.addFloatArg(spiked_output[i]);
     }
     osc_sender_msx.sendMessage(osc_spiked_output);
@@ -138,44 +129,42 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    int nbColums = ConstParams::Grid_network_width;
+    int nbColums = SpikingNetParameters::Grid_Network_Width;
     ofClear(0);
     ofSetColor(255*display_intensity);
     ofDrawBitmapString("OSC IN : "+ofToString(PORT_IN)+" - OUT :"+ofToString(PORT_OUT), nbColums*display_size + 10,15);
-    ofDrawBitmapString("Neuron number : "+ofToString(ConstParams::Number_Of_Neurons), nbColums*display_size + 10,30);
+    ofDrawBitmapString("Neuron number : "+ofToString(SpikingNetParameters::Neuron_Size), nbColums*display_size + 10,30);
     ofDrawBitmapString("frame rate : "+ofToString(ofGetFrameRate(), 2), nbColums*display_size + 10,45);
     ofDrawBitmapString("display offset : "+ofToString(neuron_getV_offset, 2), nbColums*display_size + 10,60);
     ofDrawBitmapString("output time window : "+ofToString(output_time_window), nbColums*display_size + 10,75);
     ofDrawBitmapString("stimulation input : "+ofToString(stimulation_val[0]), nbColums*display_size + 10,90);
     ofDrawBitmapString("spiked output : "+ofToString(spiked_output[0]), nbColums*display_size + 10,105);
     
-    for(int i=0; i<ConstParams::Number_Of_Neurons; i++){
-        ofSetColor((spike_net.neurons[i].getV()+neuron_getV_offset)*display_intensity);
-        ofDrawRectangle(1+display_size*(i%nbColums),1+display_size*int(i/nbColums),display_size-1,display_size-1);
+    for(int i = 0; i < SpikingNetParameters::Neuron_Size; i++){
+        ofSetColor((spike_net.neurons[i].getV() + neuron_getV_offset) * display_intensity);
+        ofDrawRectangle(1 + display_size * (i % nbColums), 1 + display_size * int(i / nbColums), display_size - 1, display_size - 1);
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::initSNN(){
-    ConstParams::Number_Of_Neurons = set_number_of_neurons;
-    ConstParams::Inhibitory_Portion = set_inhibitory_portion;
-    ConstParams::Number_Of_Inhibitory = ConstParams::Number_Of_Neurons/ConstParams::Inhibitory_Portion;
-    ConstParams::Number_Of_Connection = set_number_of_connections;
+    SpikingNetParameters::Neuron_Size = set_number_of_neurons;
+    SpikingNetParameters::Inhibitory_Portion = set_inhibitory_portion;
+    SpikingNetParameters::Inhibitory_Size = SpikingNetParameters::Neuron_Size / SpikingNetParameters::Inhibitory_Portion;
+    SpikingNetParameters::Connections_Per_Neuron = set_number_of_connections;
     
-    ConstParams::Network_Type = set_network_type;
-    ConstParams::Excitatory_Neuron_Type = set_excitatory_neuron_type;
-    ConstParams::Inhibitory_Neuron_Type = set_inhibitory_neuron_type;
+    SpikingNetParameters::Network_Type = set_network_type;
+    SpikingNetParameters::Excitatory_Neuron_Type = set_excitatory_neuron_type;
+    SpikingNetParameters::Inhibitory_Neuron_Type = set_inhibitory_neuron_type;
     
-    ConstParams::Grid_network_width = set_grid_network_width;
+    SpikingNetParameters::Grid_Network_Width = set_grid_network_width;
     
-    ConstParams::Input_Portion  = set_input_portion;
-    ConstParams::Output_Portion = set_output_portion;
-    ConstParams::Input_Group_Size  = set_input_group_size;
-    ConstParams::Output_Group_Size = set_output_group_size;
-    ConstParams::Input_Neuron_Size  = ConstParams::Number_Of_Neurons/ConstParams::Input_Portion;
-    ConstParams::Output_Neuron_Size = ConstParams::Number_Of_Neurons/ConstParams::Output_Portion;
-    ConstParams::Input_Neuron_Per_Group  = ConstParams::Input_Neuron_Size/ConstParams::Input_Group_Size;
-    ConstParams::Output_Neuron_Per_Group = ConstParams::Output_Neuron_Size/ConstParams::Output_Group_Size;
+    SpikingNetParameters::Input_Portion  = set_input_portion;
+    SpikingNetParameters::Output_Portion = set_output_portion;
+    SpikingNetParameters::Input_Group_Size  = set_input_group_size;
+    SpikingNetParameters::Output_Group_Size = set_output_group_size;
+    SpikingNetParameters::Input_Size  = SpikingNetParameters::Neuron_Size / SpikingNetParameters::Input_Portion;
+    SpikingNetParameters::Output_Size = SpikingNetParameters::Neuron_Size / SpikingNetParameters::Output_Portion;
     
     spike_net.init();
 }

@@ -20,7 +20,7 @@
 #pragma once
 
 #include "Izhikevich.h"
-#include "Parameters.h"
+#include "SpikingNetParameters.h"
 
 #include <fstream>
 #include <time.h>
@@ -34,9 +34,13 @@
 #include <memory>
 #include <vector>
 
-
-class SpikingNet : private ConstParams{
+class SpikingNet : private SpikingNetParameters {
 private:
+    inline int indexInhibitoryNeuron(int i);
+    inline int indexExcitatoryNeuron(int i);
+    inline int indexInputNeuron(int i);
+    inline int indexOutputNeuron(int i);
+    
     inline void update_neuron();
     inline void update_input();
     inline void update_input_debug();
@@ -52,26 +56,14 @@ private:
     void setUniformNetwork();
     void setChainNetwork();
     void setGridNetwork();
-    void setInputNeurons();
-    void setOutputNeurons();
     
-    inline int* getPartOutputNeuron(int start_index, int size);
-    inline bool any(int target, const int *reference, int sizeOfReference);
-    inline bool any(int target, std::vector<int> reference);
+    std::vector<float> output_spiking;
     
-    
-    std::vector<int> input_neurons;
-    std::vector<int> output_neurons;
-    std::vector<int> spiked_neuron_id;
-    std::vector<int> spiked_neuron_id_cum;
-    std::vector<int> spiked_num_of_output_group;
-    
-    //STDP
+    // STDP
     std::vector<int> stdp_counts;
-    std::vector<int> stdp_spiked_time;
     int stdp_tau;
     
-    //STP (Science paper)
+    // STP
     double* stp_u;
     double* stp_x;
     double* stp_wf;
@@ -94,11 +86,8 @@ public:
     void wholeStimulation(double stim_strength_);
     void wholeNetworkStimulation();
     void wholeNetworkStimulation(double stim_strength_);
-    void checkTask();
-    void clearSpikedNeuronId();
     int  getSpikedOutput(int index);
     int  getFrameCount(){return frameCount;};
-    std::vector<int> getSpikedIds(){return spiked_neuron_id;};
     double** getWeights(){ return weights; };
     
     std::vector<Izhikevich> neurons;

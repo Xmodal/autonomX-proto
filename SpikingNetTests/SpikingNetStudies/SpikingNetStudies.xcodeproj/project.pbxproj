@@ -13,8 +13,8 @@
 		1EB0815A9F789BF20FA09B51 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43BDABB326D8AE023C282840 /* ofxOscBundle.cpp */; };
 		239005AAEB141CADAAB2D62C /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 482DDD7A46A968EBD21EDE3B /* UdpSocket.cpp */; };
 		2E7C259AB59AE159A94B687C /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 61443B0130362CF27449994F /* IpEndpointName.cpp */; };
-		3B70998E24884DB2001A2E70 /* SpikeNetWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998524884DB1001A2E70 /* SpikeNetWriter.cpp */; };
-		3B70998F24884DB2001A2E70 /* Parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998824884DB1001A2E70 /* Parameters.cpp */; };
+		3B70998E24884DB2001A2E70 /* SpikingNetWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998524884DB1001A2E70 /* SpikingNetWriter.cpp */; };
+		3B70998F24884DB2001A2E70 /* SpikingNetParameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998824884DB1001A2E70 /* SpikingNetParameters.cpp */; };
 		3B70999024884DB2001A2E70 /* SpikingNet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998924884DB1001A2E70 /* SpikingNet.cpp */; };
 		3B70999124884DB2001A2E70 /* Izhikevich.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998A24884DB1001A2E70 /* Izhikevich.cpp */; };
 		3B70999224884DB2001A2E70 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B70998B24884DB1001A2E70 /* ofApp.cpp */; };
@@ -63,12 +63,12 @@
 		37273410FA7E5DD68B500AF1 /* OscReceivedElements.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = OscReceivedElements.h; path = ../OpenFrameworks/addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.h; sourceTree = SOURCE_ROOT; };
 		39194DF79B1174CDDA468BE8 /* ofxOscMessage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxOscMessage.cpp; path = ../OpenFrameworks/addons/ofxOsc/src/ofxOscMessage.cpp; sourceTree = SOURCE_ROOT; };
 		39BDD36DF70DC8F3A1DD6F8C /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxSliderGroup.h; path = ../OpenFrameworks/addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
-		3B70998324884DB1001A2E70 /* Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parameters.h; sourceTree = "<group>"; };
-		3B70998424884DB1001A2E70 /* SpikeNetWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpikeNetWriter.h; sourceTree = "<group>"; };
-		3B70998524884DB1001A2E70 /* SpikeNetWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpikeNetWriter.cpp; sourceTree = "<group>"; };
+		3B70998324884DB1001A2E70 /* SpikingNetParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpikingNetParameters.h; sourceTree = "<group>"; };
+		3B70998424884DB1001A2E70 /* SpikingNetWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpikingNetWriter.h; sourceTree = "<group>"; };
+		3B70998524884DB1001A2E70 /* SpikingNetWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpikingNetWriter.cpp; sourceTree = "<group>"; };
 		3B70998624884DB1001A2E70 /* SpikingNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpikingNet.h; sourceTree = "<group>"; };
 		3B70998724884DB1001A2E70 /* Izhikevich.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Izhikevich.h; sourceTree = "<group>"; };
-		3B70998824884DB1001A2E70 /* Parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parameters.cpp; sourceTree = "<group>"; };
+		3B70998824884DB1001A2E70 /* SpikingNetParameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpikingNetParameters.cpp; sourceTree = "<group>"; };
 		3B70998924884DB1001A2E70 /* SpikingNet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpikingNet.cpp; sourceTree = "<group>"; };
 		3B70998A24884DB1001A2E70 /* Izhikevich.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Izhikevich.cpp; sourceTree = "<group>"; };
 		3B70998B24884DB1001A2E70 /* ofApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofApp.cpp; sourceTree = "<group>"; };
@@ -802,10 +802,10 @@
 				3B70998D24884DB2001A2E70 /* main.cpp */,
 				3B70998B24884DB1001A2E70 /* ofApp.cpp */,
 				3B70998C24884DB2001A2E70 /* ofApp.h */,
-				3B70998824884DB1001A2E70 /* Parameters.cpp */,
-				3B70998324884DB1001A2E70 /* Parameters.h */,
-				3B70998524884DB1001A2E70 /* SpikeNetWriter.cpp */,
-				3B70998424884DB1001A2E70 /* SpikeNetWriter.h */,
+				3B70998824884DB1001A2E70 /* SpikingNetParameters.cpp */,
+				3B70998324884DB1001A2E70 /* SpikingNetParameters.h */,
+				3B70998524884DB1001A2E70 /* SpikingNetWriter.cpp */,
+				3B70998424884DB1001A2E70 /* SpikingNetWriter.h */,
 				3B70998924884DB1001A2E70 /* SpikingNet.cpp */,
 				3B70998624884DB1001A2E70 /* SpikingNet.h */,
 			);
@@ -936,7 +936,7 @@
 				534F8DDDF77C0A49DA3C3833 /* ofxBaseGui.cpp in Sources */,
 				964EA2C604CAF930B8B7775E /* ofxButton.cpp in Sources */,
 				8178A47DD741DB7F26F97628 /* ofxColorPicker.cpp in Sources */,
-				3B70998F24884DB2001A2E70 /* Parameters.cpp in Sources */,
+				3B70998F24884DB2001A2E70 /* SpikingNetParameters.cpp in Sources */,
 				467E2FE5CD31E310A34C8D0A /* ofxGuiGroup.cpp in Sources */,
 				3EA84D1A2EC9E8D0C0313A25 /* ofxInputField.cpp in Sources */,
 				F54910E105753FBD9E6FE9FA /* ofxLabel.cpp in Sources */,
@@ -954,7 +954,7 @@
 				3B70999324884DB2001A2E70 /* main.cpp in Sources */,
 				BA79D59C371D819C30B349CA /* OscPrintReceivedElements.cpp in Sources */,
 				B669869C83066E91874A3779 /* OscReceivedElements.cpp in Sources */,
-				3B70998E24884DB2001A2E70 /* SpikeNetWriter.cpp in Sources */,
+				3B70998E24884DB2001A2E70 /* SpikingNetWriter.cpp in Sources */,
 				13D8044AE3D8BD07CC922B54 /* OscTypes.cpp in Sources */,
 				1EB0815A9F789BF20FA09B51 /* ofxOscBundle.cpp in Sources */,
 				C569A31D466C776CF6069DF6 /* ofxOscMessage.cpp in Sources */,

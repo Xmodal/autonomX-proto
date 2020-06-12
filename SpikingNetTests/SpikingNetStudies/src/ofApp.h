@@ -37,9 +37,9 @@
 #include "ofxPubSubOsc.h"
 #endif
 
-#include "Parameters.h"
+#include "SpikingNetParameters.h"
 #include "SpikingNet.h"
-#include "SpikeNetWriter.h"
+#include "SpikingNetWriter.h"
 
 class ofApp : public ofBaseApp{
 
@@ -74,30 +74,30 @@ private:
     int i, j, k;
 
     SpikingNet spike_net;
-    SpikeNetWriter writer_weight, writer_spike;
+    SpikingNetWriter writer_weight, writer_spike;
 
     //raw snn variables
-    int set_number_of_neurons = ConstParams::Number_Of_Neurons;
-    int set_inhibitory_portion = ConstParams::Inhibitory_Portion;
-    int set_number_of_connections = ConstParams::Number_Of_Connection;
+    int set_number_of_neurons = SpikingNetParameters::Neuron_Size;
+    int set_inhibitory_portion = SpikingNetParameters::Inhibitory_Portion;
+    int set_number_of_connections = SpikingNetParameters::Connections_Per_Neuron;
 
-    int set_network_type = ConstParams::Network_Type;
-    int set_excitatory_neuron_type = ConstParams::Excitatory_Neuron_Type;
-    int set_inhibitory_neuron_type = ConstParams::Inhibitory_Neuron_Type;
+    int set_network_type = SpikingNetParameters::Network_Type;
+    int set_excitatory_neuron_type = SpikingNetParameters::Excitatory_Neuron_Type;
+    int set_inhibitory_neuron_type = SpikingNetParameters::Inhibitory_Neuron_Type;
     
-    int set_grid_network_width = ConstParams::Grid_network_width;
+    int set_grid_network_width = SpikingNetParameters::Grid_Network_Width;
 
-    int set_input_portion = ConstParams::Input_Portion;
-    int set_input_group_size = ConstParams::Input_Group_Size;
+    int set_input_portion = SpikingNetParameters::Input_Portion;
+    int set_input_group_size = SpikingNetParameters::Input_Group_Size;
 
-    int set_output_portion = ConstParams::Output_Portion;
-    int set_output_group_size = ConstParams::Output_Group_Size;
+    int set_output_portion = SpikingNetParameters::Output_Portion;
+    int set_output_group_size = SpikingNetParameters::Output_Group_Size;
 
-    bool set_stp_flag = ConstParams::Stp_Flag;
-    bool set_stdp_flag = ConstParams::Stdp_Flag;
-    double set_decay_rate = ConstParams::Decay_Rate;
+    bool set_stp_flag = SpikingNetParameters::Stp_Flag;
+    bool set_stdp_flag = SpikingNetParameters::Stdp_Flag;
+    double set_decay_rate = SpikingNetParameters::Decay_Rate;
 
-    int stimulation_val[10]; //dimension is ConstParams::Input_Group_Size
+    int stimulation_val[10]; //dimension is SpikingNetParameters::Input_Group_Size
     int neuron_getV_offset = 0;
     int whole_stimulation_val = 0;
 
@@ -106,7 +106,7 @@ private:
     float output_group_value[10];
     float spiked_output[10];
     float spiked_scalar = 400;
-    float n = ConstParams::Output_Neuron_Size/ConstParams::Output_Group_Size;
+    float n = SpikingNetParameters::Output_Size / SpikingNetParameters::Output_Group_Size;
 
     //display variables
     int display_size = 10;

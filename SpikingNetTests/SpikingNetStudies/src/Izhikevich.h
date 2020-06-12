@@ -18,8 +18,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#ifndef ____Izhikevich__
-#define ____Izhikevich__
 
 #include <iostream>
 #include <vector>
@@ -68,5 +66,3 @@ public:
     bool firing;
 
 };
-
-#endif /* defined(____Izhikevich__) */
