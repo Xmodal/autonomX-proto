@@ -5,6 +5,7 @@
 
 #include "generator.h"
 #include "computeengine.h"
+#include "historygraph.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +14,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    qmlRegisterType<HistoryGraph>("com.dynamiclights", 1, 0, "HistoryGraph");
 
     Generator generator;
     engine.rootContext()->setContextProperty("generator", &generator);

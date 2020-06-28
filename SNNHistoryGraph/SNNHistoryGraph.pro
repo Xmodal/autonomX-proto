@@ -19,13 +19,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    circular_buffer.cpp \
     computeengine.cpp \
     generator.cpp \
+    historygraph.cpp \
     main.cpp
 
 HEADERS += \
     computeengine.h \
-    generator.h
+    generator.h \
+    historygraph.h
 
 RESOURCES += qml.qrc \
     qml.qrc
