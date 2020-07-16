@@ -10,6 +10,11 @@ ApplicationWindow {
     title: qsTr("3D History Graph Prototype")
     color: "#848895"
 
+    Connections {
+        target: generator
+        onOutputMonitorChanged: console.log(generator.outputMonitor)
+    }
+
     View3D {
         anchors.fill: parent
         camera: camera

@@ -14,7 +14,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # DEFINES += QOSC_LIBRARY
 
 SOURCES += \
+    ComputeEngine.cpp \
+    Facade.cpp \
+    Generator.cpp \
+    Izhikevich.cpp \
+    SpikingNet.cpp \
     main.cpp
+
+HEADERS += \
+    ComputeEngine.h \
+    Facade.h \
+    Generator.h \
+    Izhikevich.h \
+    NeuronType.h \
+    SpikingNet.h
 
 RESOURCES += qml.qrc
 
