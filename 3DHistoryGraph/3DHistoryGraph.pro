@@ -19,6 +19,7 @@ SOURCES += \
     Generator.cpp \
     Izhikevich.cpp \
     SpikingNet.cpp \
+    customgeometry.cpp \
     main.cpp
 
 HEADERS += \
@@ -27,7 +28,8 @@ HEADERS += \
     Generator.h \
     Izhikevich.h \
     NeuronType.h \
-    SpikingNet.h
+    SpikingNet.h \
+    customgeometry.h
 
 RESOURCES += qml.qrc
 
