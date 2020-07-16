@@ -10,6 +10,7 @@
 #include "SpikingNet.h"
 #include "ComputeEngine.h"
 #include "Facade.h"
+#include "customgeometry.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +25,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<Facade>("ca.hexagram.xmodal.dynamiclight", 1, 0, "Facade", "Cannot instanciate Facade.");
     qmlRegisterUncreatableType<SpikingNet>("ca.hexagram.xmodal.dynamiclight", 1, 0, "SpikingNet", "Cannot instanciate SpikingNet.");
     qmlRegisterUncreatableType<NeuronType>("ca.hexagram.xmodal.dynamiclight", 1, 0, "NeuronType", "Cannot instanciate NeuronType.");
+    qmlRegisterType<CustomGeometry>("ca.hexagram.xmodal.dynamiclight", 1, 0, "CustomGeometry");
 
     // create generator list
     QSharedPointer<Generator> spikingNet = QSharedPointer<Generator>(new SpikingNet());
