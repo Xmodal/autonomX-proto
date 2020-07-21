@@ -1,0 +1,18 @@
+
+=== navigation ===
+left-click-drag on generator lattice: move lattice around
+left-click-drag on background: move observer position
+scroll up / down: zoom in / out
+
+=== input / output editing ===
+double-left-click generator lattice: create input
+shift + double-left-click generator lattice: create output
+left-click input / output: select input / output
+press backspace / delete: delete selected input / output
+left-click-drag on input / output: move input / output around
+left-click-drag on input / output circle edge: adjust input / output size
+
+=== connection editing ===
+left-click on connection: select connection
+shift + left-click-drag from output to input (on center): create connection from input to output
+press backspace / delete: delete selected connection

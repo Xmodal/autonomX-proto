@@ -1,0 +1,5 @@
+the input / outputs have a high-visibility outline that can be grabbed to resize them, and a center tag that identifies them, and can be used to move them.
+
+between this grey center tag and the outiline is a semitransparent area that lets the user see the matrix below. the lightness of this area matches the current value of the input / output, which lets the user visualize their states easily.
+
+zooming out should also be something that the user can do to navigate around.
